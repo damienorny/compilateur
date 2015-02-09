@@ -1,6 +1,6 @@
-#line 2 "scancalc.c"
+#line 2 "scancalc.cc"
 
-#line 4 "scancalc.c"
+#line 4 "scancalc.cc"
 
 #define  YY_INT_ALIGNED short int
 
@@ -465,21 +465,21 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "scancalc.l"
+#line 1 "scancalc.ll"
 /* Prologue. */
-#line 4 "scancalc.l"
-#include "parsecalc.h"
+#line 4 "scancalc.ll"
+#include "parsecalc.hh"
 
 # define YY_USER_ACTION                         \
-  yylloc->last_column += yyleng;
+  yylloc->end.column += yyleng;
 
 # define STEP()                                 \
   do {                                          \
-    yylloc->first_line = yylloc->last_line;     \
-    yylloc->first_column = yylloc->last_column; \
+    yylloc->begin.line = yylloc->end.line;     \
+    yylloc->begin.column = yylloc->end.column; \
   } while (0)
 
-#line 483 "scancalc.c"
+#line 483 "scancalc.cc"
 
 #define INITIAL 0
 
@@ -693,12 +693,13 @@ YY_DECL
 		}
 
 	{
-#line 16 "scancalc.l"
+#line 16 "scancalc.ll"
 
 
   STEP();
+  typedef yy::parser::token token;
 
-#line 702 "scancalc.c"
+#line 703 "scancalc.cc"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -757,63 +758,65 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 20 "scancalc.l"
-return PLUS;
+#line 21 "scancalc.ll"
+return token::TOK_PLUS;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 21 "scancalc.l"
-return MINUS;
+#line 22 "scancalc.ll"
+return token::TOK_MINUS;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 22 "scancalc.l"
-return STAR;
+#line 23 "scancalc.ll"
+return token::TOK_STAR;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 23 "scancalc.l"
-return SLASH;
+#line 24 "scancalc.ll"
+return token::TOK_SLASH;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 24 "scancalc.l"
-return LPAREN;
+#line 25 "scancalc.ll"
+return token::TOK_LPAREN;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 25 "scancalc.l"
-return RPAREN;
+#line 26 "scancalc.ll"
+return token::TOK_RPAREN;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 26 "scancalc.l"
-yylval->ival = strtol(yytext, 0, 10) ;return INT;
+#line 27 "scancalc.ll"
+yylval->build<int>(strtol(yytext, 0, 10)) ;return token::TOK_INT;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 27 "scancalc.l"
+#line 28 "scancalc.ll"
 STEP(); continue;
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 28 "scancalc.l"
-yylloc->last_line += 1; yylloc->last_column = 1; STEP(); return EOL;
+#line 29 "scancalc.ll"
+yylloc->end.line += 1; yylloc->end.column = 1; STEP(); return token::TOK_EOL;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 29 "scancalc.l"
+#line 30 "scancalc.ll"
 fprintf (stderr, "error: invalid character: %c\n", *yytext);
+	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+#line 31 "scancalc.ll"
+return token::TOK_EOF;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 30 "scancalc.l"
+#line 32 "scancalc.ll"
 ECHO;
 	YY_BREAK
-#line 815 "scancalc.c"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
+#line 820 "scancalc.cc"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1806,7 +1809,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 29 "scancalc.l"
+#line 31 "scancalc.ll"
 
 
 /* Epilogue.  */
