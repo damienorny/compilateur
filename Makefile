@@ -34,7 +34,7 @@ check: calc
 	! echo "(1" | ./calc
 	! echo "(1))" | ./calc
 
-.PRECIOUS: %.cc
+.PRECIOUS: %.cc %.o
 
 CLEANFILES = \
   *~ *.o calc \

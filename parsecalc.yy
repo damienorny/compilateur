@@ -20,17 +20,22 @@
 {
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 }
 
+%code requires
+{
+  #include "exp.hh"
+}
 
 %expect 0
 %left "+" "-"
 %left "*" "/"
 
 %token <int> INT "number"
-%type <int> exp line
+%type <Exp*> exp line
 
-%printer { yyo << $$; } <int>
+//%printer { yyo << $$; } <int>
 
 %token
   LPAREN "("
@@ -44,31 +49,23 @@
 %%
 input:
   %empty
-| input line  { printf("%d\n", $2); }
+| input line  { std::cout << *$2 << std::endl; }
 ;
 
 line:
-  EOL       { $$ = -1; }
+  EOL       { $$ = new Num(-1); }
 | exp EOL   { $$ = $1; }
-| error EOL { $$ = 666; yyerrok; }
+| error EOL { $$ = new Num(666); yyerrok; }
 ;
 
 exp:
-  exp "+" exp  { $$ = $1 + $3; }
-| exp "-" exp  { $$ = $1 - $3; }
-| exp "*" exp  { $$ = $1 * $3; }
-| exp "/" exp  {
-                 if ($3)
-                   $$ = $1 / $3;
-                 else
-                   {
-                     error (@3, "division by 0");
-                     YYERROR;
-                   }
-               }
+  exp "+" exp  { $$ = new Bin('+', $1, $3); }
+| exp "-" exp  { $$ = new Bin('-', $1, $3); }
+| exp "*" exp  { $$ = new Bin('*', $1, $3); }
+| exp "/" exp  { $$ = new Bin('/', $1, $3); }
 | "(" exp ")"  { $$ = $2; }
-| "(" error ")"{ $$ = 777; }
-| INT          { $$ = $1; }
+| "(" error ")"{ $$ = new Num(777); }
+| INT          { $$ = new Num($1); }
 ;
 
 %%
